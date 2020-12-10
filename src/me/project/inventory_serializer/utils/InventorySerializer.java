@@ -14,6 +14,22 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class InventorySerializer {
+    /**
+     * Serializes the inventory into bytes.
+     * The structure of bytes in the serialized inventory:
+     * 16 bytes - UUID of inventory holder. Filled with zeros if the holder is {@code null},
+     * 1 byte - title length (max title length is 128 symbols),
+     * then inventory title,
+     * 4 bytes - inventory size,
+     * the remaining bytes are content from the inventory.
+     *
+     * @param inventory inventory, that will be serialized
+     * @param title     custom title of the inventory
+     * @return the byte representation of the inventory
+     * @throws IOException if IO error occurs
+     * @see #deserialize(byte[])
+     * @see BukkitObjectOutputStream
+     */
     public static byte[] serialize(Inventory inventory, String title) throws IOException {
         try (ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream()) {
             try (BukkitObjectOutputStream objectOutputStream = new BukkitObjectOutputStream(arrayOutputStream)) {
@@ -41,6 +57,15 @@ public class InventorySerializer {
         }
     }
 
+    /**
+     * Deserializes the inventory from bytes.
+     * Note that if the owner of the inventory is not online during deserialization, inventory will be shared.
+     * @param serializedData the byte representation of the inventory
+     * @return deserialized inventory
+     * @throws IOException if IO error occurs or content cannot be parsed.
+     * @see #serialize(Inventory, String)
+     * @see BukkitObjectInputStream
+     */
     public static Inventory deserialize(byte[] serializedData) throws IOException {
         try (ByteArrayInputStream byteInputStream = new ByteArrayInputStream(serializedData)) {
             try (BukkitObjectInputStream objectInputStream = new BukkitObjectInputStream(byteInputStream)) {
