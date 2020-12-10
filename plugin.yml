@@ -1,0 +1,5 @@
+name: "InventorySerializer"
+main: me.project.inventory_serializer.Main
+api-version: 1.16
+version: 0.1
+database: true
