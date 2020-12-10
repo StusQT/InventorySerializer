@@ -5,6 +5,10 @@
 Пример использования:
 
 ```java
+String inventoryTitle = "Super inventory";
+Inventory inventory = Bukkit.createInventory(null, 36, inventoryTitle);
+inventory.setItem(3, new ItemStack(Material.PUMPKIN, 48));
+        
 SerializedInventoryDataBase dataBase =
                 new SerializedInventoryDataBase(super.getDataFolder().getAbsolutePath() + File.separator + "inventories.sqlite3");
 
