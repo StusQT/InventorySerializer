@@ -120,7 +120,11 @@ public class SerializedInventoryDataBase implements AutoCloseable {
             getInventory.setBytes(1, UUIDConverter.uuidToBytes(invId));
             ResultSet result = getInventory.executeQuery();
             if (result.isClosed()) return null;
-            else return InventorySerializer.deserialize(result.getBytes(1));
+            else {
+              Inventory parsedInventory = InventorySerializer.deserialize(result.getBytes(1));
+              result.close();
+              return parsedInventory;
+            }
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         } catch (IOException ioException) {
